@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json())
 app.use(require('./middleware/headers'))
 sequelize.sync();
-app.listen(4000, function () {
+app.listen(process.env.PORT, function () {
     console.log('App is listening on 4000')
 })
 
