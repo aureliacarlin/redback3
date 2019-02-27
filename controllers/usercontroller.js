@@ -19,7 +19,9 @@ router.post('/signup', (req, res) => {
             res.json({
                 user: user,
                 message: 'user created',
-                sessionToken: token
+                sessionToken: token,
+                isAdmin: user.isAdmin,
+                id: user.id
             })
         },
         createError = err => res.send(500, err.message)
@@ -39,7 +41,9 @@ router.post('/signin', (req, res) => {
                         res.json({
                             user: user,
                             message: 'Successfully authenticated',
-                            sessionToken: token
+                            sessionToken: token,
+                            isAdmin: user.isAdmin,
+                            id: user.id
                         })
                     } else {
                         res.status(502).send({error: 'bad gateway'})
