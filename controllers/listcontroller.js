@@ -5,8 +5,9 @@ let validateSession = require('../middleware/validate-session');
 router.post('/new', validateSession, (req, res) => {
     List.create({
         movieImage: req.body.movieImage,
-        isWatched: false,
-        owner: req.user.id
+    url: req.body.url,
+    isWatched: false,
+    userId: req.user.id
     }).then(
         createSucces = (data) => {
             res.json({
@@ -26,7 +27,7 @@ router.get('/', (req, res) => {
 
 router.get('/getmine', validateSession, function (req, res) {
     List.findAll({
-        where: {owner: req.user.id}
+        where: {userId: req.user.id}
     })
     .then(
         function findAllSuccess(data) {
@@ -49,8 +50,9 @@ router.delete('/delete/:id', validateSession, function(req, res) {
 router.put('/update/:id', validateSession, (req, res) => {
     List.update({
         movieImage: req.body.movieImage,
-        isWatched: req.body.isWatched,
-        owner: req.user.id
+      url: req.body.url,
+      isWatched: req.body.isWatched,
+      userId: req.user.id
     }, {where: {id: req.params.id}})
     .then(setting => res.status(200).json(setting))
     .catch(setting => res.json(req.errors))

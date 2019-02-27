@@ -9,14 +9,15 @@ router.post('/signup', (req, res) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         userEmail: req.body.userEmail,
-        password: bcrypt.hashSync(req.body.password, 10)
+        password: bcrypt.hashSync(req.body.password, 10),
+        isAdmin: false
     })
     .then(
         createSuccess = (user) => {
             let token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {
                 expiresIn: 60 * 60* 24
             })
-            res.json({
+            res.json({ 
                 user: user,
                 message: 'user created',
                 sessionToken: token,
@@ -83,6 +84,12 @@ router.delete('/delete/:id', validateSession, (req, res) => {
     .then(user => res.status(200).json(user))
     .catch(err => res.status(500).json({error: err}))
 })
+
+router.get("/:id", validateSession, (req, res) => {
+    User.findOne({ where: { id: req.params.id } })
+      .then(user => res.status(200).json(user))
+      .catch(err => res.status(500).json({ error: err }));
+  });
 
 module.exports = router
 
